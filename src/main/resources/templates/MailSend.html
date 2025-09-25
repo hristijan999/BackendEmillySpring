@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body style="font-family: Arial, sans-serif; color:#333;">
+<div style="max-width:600px; margin:0 auto; padding:20px; border:1px solid #eee; border-radius:8px;">
+    <div style="text-align:center;">
+        <img src="https://purple-gigantic-kangaroo-197.mypinata.cloud/ipfs/QmTwebymmmakVNnkmSsTVPNu6H5rLBosFLJZbiw2sUYmuS" alt="Emilly Shop" width="150"/>
+        <h2 style="color:#444;">Thank you for your order!</h2>
+    </div>
+    <p>Dear <b th:text="${name} + ' ' + ${surname}">Customer Name</b>,</p>
+    <p>We have received your order and will deliver it to:</p>
+    <p><b th:text="${location}">Skopje</b></p>
+    <hr/>
+    <ul>
+        <li th:each="item : ${items}" style="margin-bottom:10px;">
+            <img th:src="${items.}">g
+            <span th:text="${item.name}">Item Name</span> -
+            <span th:text="${item.quantity}">1</span> x
+            <span th:text="${item.price}">100.00</span> MKD
+        </li>
+    </ul>
+    <p style="font-size:14px; color:#666;">
+        If you have any questions, contact us at support@emilly.com.mk
+    </p>
+</div>
+</body>
+</html>
