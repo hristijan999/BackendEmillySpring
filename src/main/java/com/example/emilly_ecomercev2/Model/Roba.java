@@ -20,7 +20,7 @@ public class Roba {
     int price;
 
 
-    String Opis;
+    String opis;
 
     String detalenOpis;
 
@@ -35,22 +35,23 @@ public class Roba {
     @Column(nullable = false)
     Boolean popust=false;
 
-    int CenaSoPopust=0;
+    int cenaSoPopust=0;
 
 
     public Roba()
     {
-        CenaSoPopust=1;
+        cenaSoPopust=1;
     }
 
-    public Roba(String opis,String type, int price, List<String> lista_Sliki, List<String> lista_Size,int CenaSoPopust) {
+    public Roba(String opis,String detalenOpis,String type, int price, List<String> lista_Sliki, List<String> lista_Size,int cenaSoPopust,Boolean popust) {
         this.type = type;
         this.price = price;
-
+        this.detalenOpis=detalenOpis;
         this.lista_Sliki = lista_Sliki;
         this.lista_Size = lista_Size;
-        this.CenaSoPopust=CenaSoPopust;
-        this.Opis=opis;
+        this.cenaSoPopust=cenaSoPopust;
+        this.opis=opis;
+        this.popust=popust;
     }
 
 

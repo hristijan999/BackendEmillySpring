@@ -18,7 +18,7 @@ public class User implements UserDetails {
     String mail;
     String password;
     String role;
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     List<Long> LikedImages;
 
     String location;

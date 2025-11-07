@@ -15,22 +15,26 @@ public class EshopGRUD {
     }
 
     @PostMapping("/save")
-    public void save(Roba roba)
+    public void save(@RequestBody Roba roba)
     {
         System.out.println("vleze vo grub /save");
+        System.out.println(roba);
 //        robaService.save(roba);
     }
 
     @DeleteMapping("/delete")
-    public void delete(Long id)
+    public void delete(@RequestParam Long id)
     {
-        robaService.deleteById(id);
+        System.out.println("vleze vo grub delete"+ id);
+//        robaService.deleteById(id);
     }
 
-    @PutMapping("update")
-    public void update(Roba roba)
+    @PutMapping("/update")
+    public void update(@RequestBody Roba roba)
     {
-        robaService.update(roba);
+        System.out.println("vleze vo grub update");
+        System.out.println(roba);
+//        robaService.update(roba);
     }
 
 }

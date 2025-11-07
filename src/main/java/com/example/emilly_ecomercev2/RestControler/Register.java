@@ -46,11 +46,15 @@ public class Register {
     @GetMapping("/me")
     public Map<String, Object> currentUser(Principal principal, Authentication authentication) {
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("username", principal.getName());
-        userInfo.put("roles", authentication.getAuthorities()
-                .stream()
-                .map(a -> a.getAuthority())
-                .toList());
+        if(principal != null)
+        {
+            userInfo.put("username", principal.getName());
+            userInfo.put("roles", authentication.getAuthorities()
+                    .stream()
+                    .map(a -> a.getAuthority())
+                    .toList());
+        }
+
         return userInfo;
     }
 
