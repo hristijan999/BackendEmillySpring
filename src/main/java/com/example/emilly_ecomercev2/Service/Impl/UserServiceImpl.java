@@ -1,6 +1,6 @@
 package com.example.emilly_ecomercev2.Service.Impl;
 
-import com.example.emilly_ecomercev2.Model.User;
+import com.example.emilly_ecomercev2.Model.Korisnik;
 import com.example.emilly_ecomercev2.Repository.UserRepository;
 import com.example.emilly_ecomercev2.Service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +22,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public User findByMail(String mail) {
+    public Korisnik findByMail(String mail) {
         return userRepository.findByMail(mail);
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<Korisnik> findById(Long id) {
         return userRepository.findById(id);
     }
 
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void updatedLikedImageIdsByUsername(Long id,String mail) {
-        User user=userRepository.findByMail(mail);
+        Korisnik user=userRepository.findByMail(mail);
 
         if (user == null) {
             throw new RuntimeException("User not found");
@@ -50,7 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public void deleteLikedId(Long id, String mail) {
-        User user = userRepository.findByMail(mail);
+        Korisnik user = userRepository.findByMail(mail);
         if (user == null) {
             throw new RuntimeException("User not found");
         }
@@ -62,14 +61,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userRepository.save(user);
         }
     }
-    public void save(User user)
+    public void save(Korisnik user)
     {
         userRepository.save(user);
     }
 
     @Override
     public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-        User user = userRepository.findByMail(mail);
+        Korisnik user = userRepository.findByMail(mail);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }

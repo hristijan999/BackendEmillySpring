@@ -31,6 +31,14 @@ public class Eshop {
     public Page<Roba> findAllByType(@RequestParam String type, Pageable pageable) {
         return robaService.findAllByType(type, pageable);
     }
+    @GetMapping("/pageablewithfilter")
+    public Page<Roba> findAllByTypeAndPriceBetween(
+            @RequestParam String type,
+            @RequestParam int minPrice,
+            @RequestParam int maxPrice,
+            Pageable pageable) {
+        return robaService.findWithFilters(type, minPrice, maxPrice, pageable);
+    }
 
     @GetMapping("/findAllByPriceBetween")
     public Page<Roba> findAllByPriceBetween(

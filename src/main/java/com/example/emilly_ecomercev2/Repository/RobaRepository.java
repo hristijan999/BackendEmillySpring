@@ -4,6 +4,8 @@ import com.example.emilly_ecomercev2.Model.Roba;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +20,15 @@ public interface RobaRepository extends JpaRepository<Roba,Long> {
 
 
 
-
+    @Query("SELECT r FROM Roba r WHERE " +
+            "(:type IS NULL OR r.type = :type) AND " +
+            "(:minPrice IS NULL OR r.price >= :minPrice) AND " +
+            "(:maxPrice IS NULL OR r.price <= :maxPrice)")
+    Page<Roba> findWithFilters(
+            @Param("type") String type,
+            @Param("minPrice") Integer minPrice,
+            @Param("maxPrice") Integer maxPrice,
+            Pageable pageable);
 
 
     Page<Roba> findAllByType(String type, Pageable pageable);

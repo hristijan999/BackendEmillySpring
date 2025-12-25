@@ -36,6 +36,10 @@ public class RobaServiceImpl implements RobaService {
         return robaRepository.findFirstById(id);
     }
 
+    @Override
+    public Page<Roba> findWithFilters(String type, Integer minPrice, Integer maxPrice, Pageable pageable) {
+        return robaRepository.findWithFilters(type, minPrice, maxPrice, pageable);
+    }
 
 
     public Page<Roba> FindAllByType(String type,Pageable pageable) {

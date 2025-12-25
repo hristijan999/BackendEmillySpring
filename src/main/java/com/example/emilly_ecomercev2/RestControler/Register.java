@@ -1,7 +1,6 @@
 package com.example.emilly_ecomercev2.RestControler;
 
-import com.example.emilly_ecomercev2.Model.User;
-import com.example.emilly_ecomercev2.Repository.UserRepository;
+import com.example.emilly_ecomercev2.Model.Korisnik;
 import com.example.emilly_ecomercev2.Service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,18 +26,18 @@ public class Register {
     }
 
     @PostMapping()
-    public void register(@RequestBody User user)
+    public void register(@RequestBody Korisnik user)
     {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         if(Objects.equals(user.getMail(), "hristijan.kolevski099@gmail.com"))
         {
-            User newuser=new User(user.getMail(),encodedPassword,"ADMIN");
+            Korisnik newuser=new Korisnik(user.getMail(),encodedPassword,"ADMIN");
             userService.save(newuser);
         }
         else
         {
 
-            User newuser=new User(user.getMail(),encodedPassword,"USER");
+            Korisnik newuser=new Korisnik(user.getMail(),encodedPassword,"USER");
             userService.save(newuser);
         }
 

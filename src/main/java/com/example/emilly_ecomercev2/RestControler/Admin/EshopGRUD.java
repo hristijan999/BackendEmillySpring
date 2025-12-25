@@ -19,7 +19,7 @@ public class EshopGRUD {
     {
         System.out.println("vleze vo grub /save");
         System.out.println(roba);
-//        robaService.save(roba);
+        robaService.save(roba);
     }
 
     @DeleteMapping("/delete")
@@ -34,7 +34,7 @@ public class EshopGRUD {
     {
         System.out.println("vleze vo grub update");
         System.out.println(roba);
-//        robaService.update(roba);
+        robaService.update(roba);
     }
 
 }

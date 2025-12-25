@@ -1,6 +1,6 @@
 package com.example.emilly_ecomercev2.RestControler.Admin;
 
-import com.example.emilly_ecomercev2.Model.User;
+import com.example.emilly_ecomercev2.Model.Korisnik;
 import com.example.emilly_ecomercev2.Service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +26,7 @@ public class Admin {
         String password = body.get("password");
 
         String encodedPassword = passwordEncoder.encode(password);
-        User user =userService.findByMail("hristijan.kolevski099@gmail.com");
+        Korisnik user =userService.findByMail("hristijan.kolevski099@gmail.com");
         user.setPassword(encodedPassword);
         userService.save(user);
     }

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class User implements UserDetails {
+public class Korisnik implements UserDetails {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -25,10 +25,10 @@ public class User implements UserDetails {
     String verificationToken;
     @Column(nullable = false)
     boolean isEnabled;
-    public User() {
+    public Korisnik() {
 
     }
-    public User(String mail, String password, String role) {
+    public Korisnik(String mail, String password, String role) {
         this.mail = mail;
         this.password = password;
         this.role = role;
