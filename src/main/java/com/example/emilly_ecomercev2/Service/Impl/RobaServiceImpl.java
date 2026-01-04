@@ -5,6 +5,7 @@ import com.example.emilly_ecomercev2.Repository.RobaRepository;
 import com.example.emilly_ecomercev2.Service.RobaService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,8 +38,8 @@ public class RobaServiceImpl implements RobaService {
     }
 
     @Override
-    public Page<Roba> findWithFilters(String type, Integer minPrice, Integer maxPrice, Pageable pageable) {
-        return robaRepository.findWithFilters(type, minPrice, maxPrice, pageable);
+    public Page<Roba> findWithFilters(String type, String pol, Integer minPrice, Integer maxPrice, Pageable pageable) {
+        return robaRepository.findWithFilters(type, pol, minPrice, maxPrice, pageable);
     }
 
 
@@ -82,5 +83,6 @@ public class RobaServiceImpl implements RobaService {
     {
         robaRepository.save(roba);
     }
+
 
 }

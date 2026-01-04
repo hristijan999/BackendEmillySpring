@@ -14,7 +14,7 @@ public class Roba {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
+    String pol;
     String type;
 
     int price;
@@ -43,8 +43,9 @@ public class Roba {
         cenaSoPopust=1;
     }
 
-    public Roba(String opis,String detalenOpis,String type, int price, List<String> lista_Sliki, List<String> lista_Size,int cenaSoPopust,Boolean popust) {
+    public Roba(String opis,String pol,String detalenOpis,String type, int price, List<String> lista_Sliki, List<String> lista_Size,int cenaSoPopust,Boolean popust) {
         this.type = type;
+        this.pol=pol;
         this.price = price;
         this.detalenOpis=detalenOpis;
         this.lista_Sliki = lista_Sliki;

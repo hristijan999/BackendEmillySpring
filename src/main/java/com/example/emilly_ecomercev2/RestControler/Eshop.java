@@ -22,7 +22,7 @@ public class Eshop {
 
     @GetMapping("/findAll")
     public Page<Roba> findAll(Pageable pageable) {
-        System.out.println("Fetching paginated products");
+
         return robaService.findAll(pageable);
     }
 
@@ -37,7 +37,23 @@ public class Eshop {
             @RequestParam int minPrice,
             @RequestParam int maxPrice,
             Pageable pageable) {
-        return robaService.findWithFilters(type, minPrice, maxPrice, pageable);
+        return robaService.findWithFilters(type, null, minPrice, maxPrice, pageable);
+    }
+
+    @GetMapping("/filter/{minPrice}/{maxPrice}/{type}/{pol}")
+    public Page<Roba> filterProducts(
+            @PathVariable Integer minPrice,
+            @PathVariable Integer maxPrice,
+            @PathVariable String type,
+            @PathVariable String pol,
+            Pageable pageable) {
+        // Use "all" or "null" as path variable value to skip filter
+        String typeFilter = "all".equalsIgnoreCase(type) ? null : type;
+        String polFilter = "all".equalsIgnoreCase(pol) ? null : pol;
+        Integer minPriceFilter = minPrice == 0 ? null : minPrice;
+        Integer maxPriceFilter = maxPrice == 0 ? null : maxPrice;
+
+        return robaService.findWithFilters(typeFilter, polFilter, minPriceFilter, maxPriceFilter, pageable);
     }
 
     @GetMapping("/findAllByPriceBetween")

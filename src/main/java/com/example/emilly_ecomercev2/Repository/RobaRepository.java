@@ -22,10 +22,12 @@ public interface RobaRepository extends JpaRepository<Roba,Long> {
 
     @Query("SELECT r FROM Roba r WHERE " +
             "(:type IS NULL OR r.type = :type) AND " +
+            "(:pol IS NULL OR r.pol = :pol) AND " +
             "(:minPrice IS NULL OR r.price >= :minPrice) AND " +
             "(:maxPrice IS NULL OR r.price <= :maxPrice)")
     Page<Roba> findWithFilters(
             @Param("type") String type,
+            @Param("pol") String pol,
             @Param("minPrice") Integer minPrice,
             @Param("maxPrice") Integer maxPrice,
             Pageable pageable);

@@ -14,7 +14,7 @@ public interface RobaService {
 
     Optional<Roba> findById(Long id);
     Roba findFirstById(Long id);
-    Page<Roba> findWithFilters(@Param("type") String type, @Param("minPrice") Integer minPrice, @Param("maxPrice") Integer maxPrice, Pageable pageable);
+    Page<Roba> findWithFilters(@Param("type") String type, @Param("pol") String pol, @Param("minPrice") Integer minPrice, @Param("maxPrice") Integer maxPrice, Pageable pageable);
     Page<Roba> findAllByType(String type, Pageable pageable);
     Page<Roba> findAllByPriceBetween(int minPrice, int maxPrice, Pageable pageable);
     Page<Roba> findAllByPriceBetweenOrderByPriceAsc(int minPrice, int maxPrice, Pageable pageable);
