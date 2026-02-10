@@ -26,6 +26,10 @@ public class Eshop {
         return robaService.findAll(pageable);
     }
 
+        @GetMapping("findById/{id}")
+        public Roba findById(@PathVariable Long id) {
+            return robaService.findFirstById(id);
+        }
 
     @GetMapping("/findAllByType")
     public Page<Roba> findAllByType(@RequestParam String type, Pageable pageable) {
