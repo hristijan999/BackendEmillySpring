@@ -16,7 +16,7 @@ public class Roba {
     Long id;
     String pol;
     String type;
-
+    String materijal;
     int price;
 
 
@@ -43,7 +43,8 @@ public class Roba {
         cenaSoPopust=1;
     }
 
-    public Roba(String opis,String pol,String detalenOpis,String type, int price, List<String> lista_Sliki, List<String> lista_Size,int cenaSoPopust,Boolean popust) {
+    public Roba(String opis,String pol,String detalenOpis,String type, int price, List<String> lista_Sliki, List<String> lista_Size,int cenaSoPopust,Boolean popust,String materijal) {
+        this.materijal=materijal;
         this.type = type;
         this.pol=pol;
         this.price = price;
