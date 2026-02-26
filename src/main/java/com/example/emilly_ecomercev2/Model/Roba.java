@@ -16,13 +16,18 @@ public class Roba {
     Long id;
     String pol;
     String type;
-    String materijal;
+
+
+
     int price;
 
 
     String opis;
 
     String detalenOpis;
+
+    @ElementCollection
+    List<String> materijali =new ArrayList<>();
 
     @ElementCollection
     List<String> lista_Sliki=new ArrayList<>();
@@ -43,13 +48,14 @@ public class Roba {
         cenaSoPopust=1;
     }
 
-    public Roba(String opis,String pol,String detalenOpis,String type, int price, List<String> lista_Sliki, List<String> lista_Size,int cenaSoPopust,Boolean popust,String materijal) {
-        this.materijal=materijal;
+    public Roba(String opis,String pol,String detalenOpis,String type, int price,List<String> materijali, List<String> lista_Sliki, List<String> lista_Size,int cenaSoPopust,Boolean popust) {
+
         this.type = type;
         this.pol=pol;
         this.price = price;
         this.detalenOpis=detalenOpis;
         this.lista_Sliki = lista_Sliki;
+        this.materijali=materijali;
         this.lista_Size = lista_Size;
         this.cenaSoPopust=cenaSoPopust;
         this.opis=opis;

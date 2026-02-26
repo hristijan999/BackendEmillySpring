@@ -12,7 +12,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/eshop")
-public class Eshop {
+public class  Eshop {
 
     public final RobaService robaService;
 
