@@ -6,6 +6,7 @@ import java.time.Instant;
 
 @Data
 public class ChatMessage {
+    private boolean admin;
     private String clientId;
     private String content;
     private String from;

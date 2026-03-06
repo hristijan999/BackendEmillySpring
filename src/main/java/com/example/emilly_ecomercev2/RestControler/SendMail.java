@@ -25,6 +25,9 @@ public class SendMail {
         Map<String, Object> model = Map.of(
                 "name", request.getName(),
                 "surname", request.getSurname(),
+                "email", request.getEmail(),
+                "phone", request.getPhone(),
+                "city",request.getCity(),
                 "location", request.getLocation(),
                 "cart", request.getCart()
         );
