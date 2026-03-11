@@ -3,6 +3,7 @@ package com.example.emilly_ecomercev2.Repository;
 import com.example.emilly_ecomercev2.Model.Roba;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,8 +15,11 @@ public interface RobaRepository extends JpaRepository<Roba,Long> {
     @Override
     List<Roba> findAll();
 
+
+
     @Override
     Optional<Roba> findById(Long id);
+
     Roba findFirstById(Long id);
 
 
@@ -31,7 +35,6 @@ public interface RobaRepository extends JpaRepository<Roba,Long> {
             @Param("minPrice") Integer minPrice,
             @Param("maxPrice") Integer maxPrice,
             Pageable pageable);
-
 
     Page<Roba> findAllByType(String type, Pageable pageable);
     Page<Roba> findAllByPriceBetween(int minPrice, int maxPrice, Pageable pageable);

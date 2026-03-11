@@ -28,6 +28,7 @@ public class ChatController {
         // Per-client stream
         if (StringUtils.hasText(message.getClientId())) {
             messagingTemplate.convertAndSend("/topic/user." + message.getClientId(), message);
+            System.out.println(message.getClientId());
         }
 
 
