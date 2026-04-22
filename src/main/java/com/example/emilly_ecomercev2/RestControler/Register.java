@@ -48,6 +48,7 @@ public class Register {
         if(principal != null)
         {
             userInfo.put("username", principal.getName());
+
             userInfo.put("roles", authentication.getAuthorities()
                     .stream()
                     .map(a -> a.getAuthority())

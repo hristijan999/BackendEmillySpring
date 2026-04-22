@@ -79,9 +79,23 @@ public class RobaServiceImpl implements RobaService {
     {
         robaRepository.deleteById(id);
     }
+
     public void update(Roba roba)
     {
-        robaRepository.save(roba);
+        Roba existingRoba = robaRepository.findById(roba.getId()).orElse(null);
+        if(existingRoba != null) {
+            existingRoba.setPol(roba.getPol());
+            existingRoba.setType(roba.getType());
+            existingRoba.setPrice(roba.getPrice());
+            existingRoba.setMaterial(roba.getMaterial());
+            existingRoba.setOpis(roba.getOpis());
+            existingRoba.setDetalenOpis(roba.getDetalenOpis());
+            existingRoba.setLista_Sliki(roba.getLista_Sliki());
+            existingRoba.setLista_Size(roba.getLista_Size());
+            existingRoba.setPopust(roba.getPopust());
+            existingRoba.setCenaSoPopust(roba.getCenaSoPopust());
+            robaRepository.save(existingRoba);
+        }
     }
 
 

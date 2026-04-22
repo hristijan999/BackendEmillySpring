@@ -1,5 +1,6 @@
 package com.example.emilly_ecomercev2._WebSocketConfig;
 
+import com.example.emilly_ecomercev2.Service.ChatSessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -21,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketEventListener {
 
     private final SimpMessageSendingOperations simpMessageSendingOperations;
+    private final ChatSessionService chatSessionService;
 
     // Track clientId per session to use on disconnect (native headers may be absent there)
     private final Map<String, String> sessionToClientId = new ConcurrentHashMap<>();
@@ -30,9 +32,11 @@ public class WebSocketEventListener {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String sessionId = accessor.getSessionId();
         String clientId = accessor.getFirstNativeHeader("clientId"); // client should send this native header
+        String clientName = accessor.getFirstNativeHeader("clientName"); // client should send this native header
 
         if (clientId != null && !clientId.isBlank()) {
             sessionToClientId.put(sessionId, clientId);
+            chatSessionService.getOrCreateSession(clientId, clientName);
         }
 
         log.info("WS CONNECT: sessionId={}, clientId={}", sessionId, clientId);
@@ -42,7 +46,7 @@ public class WebSocketEventListener {
                 Map.of(
                         "event", "CONNECTED",
                         "sessionId", sessionId,
-                        "clientId", clientId,
+                        "clientId", clientId != null ? clientId : "unknown",
                         "timestamp", Instant.now().toString()
                 )
         );
@@ -63,7 +67,11 @@ public class WebSocketEventListener {
     public void handleSessionDisconnected(SessionDisconnectEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String sessionId = accessor.getSessionId();
-        String clientId = sessionToClientId.remove(sessionId);
+        String clientId = sessionToClientId.remove(sessionId); // remove and get
+
+        if (clientId != null) {
+            chatSessionService.deactivateSession(clientId);
+        }
 
         log.info("WS DISCONNECT: sessionId={}, clientId={}", sessionId, clientId);
 
@@ -72,21 +80,10 @@ public class WebSocketEventListener {
                 Map.of(
                         "event", "DISCONNECTED",
                         "sessionId", sessionId,
-                        "clientId", clientId,
+                        "clientId", clientId != null ? clientId : "unknown",
                         "timestamp", Instant.now().toString()
                 )
         );
-
-//        if (clientId != null && !clientId.isBlank()) {
-//            simpMessageSendingOperations.convertAndSend(
-//                    "/topic/user." + clientId,
-//                    Map.of(
-//                            "event", "BYE",
-//                            "message", "Disconnected",
-//                            "timestamp", Instant.now().toString()
-//                    )
-//            );
-//        }
     }
 
     @EventListener

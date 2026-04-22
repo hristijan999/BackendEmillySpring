@@ -57,6 +57,7 @@ public class  Eshop {
         Integer minPriceFilter = minPrice == 0 ? null : minPrice;
         Integer maxPriceFilter = maxPrice == 0 ? null : maxPrice;
 
+
         return robaService.findWithFilters(typeFilter, polFilter, minPriceFilter, maxPriceFilter, pageable);
     }
 

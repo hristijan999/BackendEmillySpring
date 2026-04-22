@@ -13,23 +13,22 @@ public class EshopGRUD {
     public EshopGRUD(RobaService robaService) {
         this.robaService = robaService;
     }
-
     @PostMapping("/save")
     public void save(@RequestBody Roba roba)
     {
         System.out.println("vleze vo grub /save");
         System.out.println(roba);
-        robaService.save(roba);
+//        robaService.save(roba);
     }
 
     @DeleteMapping("/delete")
     public void delete(@RequestParam Long id)
     {
         System.out.println("vleze vo grub delete"+ id);
-//        robaService.deleteById(id);
+        robaService.deleteById(id);
     }
 
-    @PutMapping("/update")
+    @GetMapping("/update")
     public void update(@RequestBody Roba roba)
     {
         System.out.println("vleze vo grub update");
