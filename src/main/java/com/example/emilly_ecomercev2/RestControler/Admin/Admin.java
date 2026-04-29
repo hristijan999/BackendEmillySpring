@@ -15,6 +15,7 @@ import java.util.Map;
 public class Admin {
     public final UserService userService;
     private final PasswordEncoder passwordEncoder;
+
     public Admin(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;

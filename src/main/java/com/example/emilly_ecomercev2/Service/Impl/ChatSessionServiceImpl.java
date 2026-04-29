@@ -30,6 +30,11 @@ public class ChatSessionServiceImpl implements ChatSessionService {
     }
 
     @Override
+    public List<ChatSession> getAllSessions() {
+        return chatSessionRepository.findAll();
+    }
+
+    @Override
     public void deactivateSession(String clientId) {
         chatSessionRepository.findByClientId(clientId).ifPresent(session -> {
             session.setActive(false);

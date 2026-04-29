@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Потврда за закажан термин</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        .content p {
+            font-size: 16px;
+            line-height: 1.7;
+        }
+        .details {
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .details strong {
+            display: inline-block;
+            width: 100px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Потврда за Закажан Термин</h1>
+    </div>
+    <div class="content">
+        <p>Здраво <strong th:text="${name}"></strong>,</p>
+        <p>Вашиот термин е успешно закажан. Ви благодариме што не избравте нас!</p>
+        <p>Подолу се деталите за вашиот термин:</p>
+    </div>
+    <div class="details">
+        <p><strong>Име:</strong> <span th:text="${name}"></span></p>
+        <p><strong>Презиме:</strong> <span th:text="${surname}"></span></p>
+        <p><strong>Телефон:</strong> <span th:text="${phone}"></span></p>
+        <p><strong>Датум:</strong> <span th:text="${date}"></span></p>
+        <p><strong>Час:</strong> <span th:text="${timeRange}"></span></p>
+        <p><strong>Е-маил:</strong> <span th:text="${email}"></span></p>
+    </div>
+    <div class="content">
+        <p>Доколку имате потреба да го откажете или промените терминот, ве молиме контактирајте не што е можно поскоро.</p>
+        <p>Со почит,<br>Тимот на Emilly</p>
+    </div>
+    <div class="footer">
+        <p>&copy; 2026 Emilly. Сите права се задржани.</p>
+    </div>
+</div>
+</body>
+</html>
+</body>
+</html>

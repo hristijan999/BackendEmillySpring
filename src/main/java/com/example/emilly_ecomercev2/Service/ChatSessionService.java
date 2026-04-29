@@ -10,6 +10,8 @@ public interface ChatSessionService {
 
     Optional<ChatSession> getSession(String clientId);
 
+    List<ChatSession> getAllSessions();
+
     void deactivateSession(String clientId);
 
     List<ChatSession> getActiveSessions();

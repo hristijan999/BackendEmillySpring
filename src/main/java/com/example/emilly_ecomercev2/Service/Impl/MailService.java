@@ -38,4 +38,22 @@ public class MailService {
 
         mailSender.send(mimeMessage);
     }
+
+    public void sendAppointmentMail(String to, Map<String, Object> variables) throws MessagingException {
+
+        Context context = new Context();
+        context.setVariables(variables);
+
+        String htmlContent = templateEngine.process("AppointmentMail", context);
+
+        // build email
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+        helper.setFrom("hristijan.kolevski099@gmail.com");
+        helper.setTo(to);
+        helper.setSubject("Order Confirmation - Emilly Shop");
+        helper.setText(htmlContent, true);
+        mailSender.send(mimeMessage);
+    }
 }

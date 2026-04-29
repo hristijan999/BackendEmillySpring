@@ -35,8 +35,8 @@ public class WebSocketEventListener {
         String clientName = accessor.getFirstNativeHeader("clientName"); // client should send this native header
 
         if (clientId != null && !clientId.isBlank()) {
-            sessionToClientId.put(sessionId, clientId);
-            chatSessionService.getOrCreateSession(clientId, clientName);
+            sessionToClientId.put(sessionId != null ? sessionId : "unknown", clientId); // Protect against null sessionId
+            chatSessionService.getOrCreateSession(clientId, clientName != null ? clientName : "unknown");
         }
 
         log.info("WS CONNECT: sessionId={}, clientId={}", sessionId, clientId);
@@ -45,7 +45,7 @@ public class WebSocketEventListener {
                 "/topic/admin",
                 Map.of(
                         "event", "CONNECTED",
-                        "sessionId", sessionId,
+                        "sessionId", sessionId != null ? sessionId : "unknown",
                         "clientId", clientId != null ? clientId : "unknown",
                         "timestamp", Instant.now().toString()
                 )
@@ -67,7 +67,7 @@ public class WebSocketEventListener {
     public void handleSessionDisconnected(SessionDisconnectEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String sessionId = accessor.getSessionId();
-        String clientId = sessionToClientId.remove(sessionId); // remove and get
+        String clientId = sessionId != null ? sessionToClientId.remove(sessionId) : null;
 
         if (clientId != null) {
             chatSessionService.deactivateSession(clientId);
@@ -79,7 +79,7 @@ public class WebSocketEventListener {
                 "/topic/admin",
                 Map.of(
                         "event", "DISCONNECTED",
-                        "sessionId", sessionId,
+                        "sessionId", sessionId != null ? sessionId : "unknown",
                         "clientId", clientId != null ? clientId : "unknown",
                         "timestamp", Instant.now().toString()
                 )
