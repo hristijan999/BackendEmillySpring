@@ -40,16 +40,18 @@ public class  Eshop {
             @RequestParam String type,
             @RequestParam int minPrice,
             @RequestParam int maxPrice,
+            @RequestParam boolean popust,
             Pageable pageable) {
-        return robaService.findWithFilters(type, null, minPrice, maxPrice, pageable);
+        return robaService.findWithFilters(type, null, minPrice, maxPrice,popust, pageable);
     }
 
-    @GetMapping("/filter/{minPrice}/{maxPrice}/{type}/{pol}")
+    @GetMapping("/filter/{pol}/{type}/{minPrice}/{maxPrice}/{popust}")
     public Page<Roba> filterProducts(
+            @PathVariable String pol,
+            @PathVariable String type,
             @PathVariable Integer minPrice,
             @PathVariable Integer maxPrice,
-            @PathVariable String type,
-            @PathVariable String pol,
+            @PathVariable boolean popust,
             Pageable pageable) {
         // Use "all" or "null" as path variable value to skip filter
         String typeFilter = "all".equalsIgnoreCase(type) ? null : type;
@@ -58,7 +60,7 @@ public class  Eshop {
         Integer maxPriceFilter = maxPrice == 0 ? null : maxPrice;
 
 
-        return robaService.findWithFilters(typeFilter, polFilter, minPriceFilter, maxPriceFilter, pageable);
+        return robaService.findWithFilters(typeFilter, polFilter, minPriceFilter, maxPriceFilter,popust, pageable);
     }
 
     @GetMapping("/findAllByPriceBetween")

@@ -34,8 +34,8 @@ public class Roba {
 
     String sizePicked;
 
-    @Column(nullable = false)
-    Boolean popust=false;
+
+    Boolean popust;
 
     int cenaSoPopust=0;
 

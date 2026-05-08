@@ -1,3 +1,4 @@
+
 package com.example.emilly_ecomercev2.Repository;
 
 import com.example.emilly_ecomercev2.Model.Roba;
@@ -28,12 +29,14 @@ public interface RobaRepository extends JpaRepository<Roba,Long> {
             "(:type IS NULL OR r.type = :type) AND " +
             "(:pol IS NULL OR r.pol = :pol) AND " +
             "(:minPrice IS NULL OR r.price >= :minPrice) AND " +
-            "(:maxPrice IS NULL OR r.price <= :maxPrice)")
+            "(:maxPrice IS NULL OR r.price <= :maxPrice) AND " +
+            "(:popust IS NULL OR r.popust = :popust)")
     Page<Roba> findWithFilters(
             @Param("type") String type,
             @Param("pol") String pol,
             @Param("minPrice") Integer minPrice,
             @Param("maxPrice") Integer maxPrice,
+            @Param("popust") Boolean popust,
             Pageable pageable);
 
     Page<Roba> findAllByType(String type, Pageable pageable);
