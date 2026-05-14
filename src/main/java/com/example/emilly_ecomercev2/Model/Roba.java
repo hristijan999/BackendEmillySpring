@@ -1,12 +1,16 @@
 package com.example.emilly_ecomercev2.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 public class Roba {
@@ -40,23 +44,7 @@ public class Roba {
     int cenaSoPopust=0;
 
 
-    public Roba()
-    {
-        cenaSoPopust=1;
-    }
 
-    public Roba(String opis,String pol,String detalenOpis,String type, int price, List<String> lista_Sliki, List<String> lista_Size,int cenaSoPopust,Boolean popust,List<String> material) {
-        this.type = type;
-        this.pol=pol;
-        this.price = price;
-        this.detalenOpis=detalenOpis;
-        this.material=material;
-        this.lista_Sliki = lista_Sliki;
-        this.lista_Size = lista_Size;
-        this.cenaSoPopust=cenaSoPopust;
-        this.opis=opis;
-        this.popust=popust;
-    }
 
 
 

@@ -44,24 +44,48 @@ public class  Eshop {
             Pageable pageable) {
         return robaService.findWithFilters(type, null, minPrice, maxPrice,popust, pageable);
     }
+// od forntend ako nee e aktiven filterot prakam string 'all' zato ne rabotitt ova
+//    @GetMapping("/filter/{pol}/{type}/{minPrice}/{maxPrice}/{popust}")
+//    public Page<Roba> filterProducts(
+//            @PathVariable String pol,
+//            @PathVariable String type,
+//            @PathVariable Integer minPrice,
+//            @PathVariable Integer maxPrice,
+//            @PathVariable boolean popust,
+//            Pageable pageable) {
+//        // Use "all" or "null" as path variable value to skip filter
+//        String typeFilter = "all".equalsIgnoreCase(type) ? null : type;
+//        String polFilter = "all".equalsIgnoreCase(pol) ? null : pol;
+//        Integer minPriceFilter = minPrice == 0 ? null : minPrice;
+//        Integer maxPriceFilter = maxPrice == 0 ? null : maxPrice;
+//
+//
+//        return robaService.findWithFilters(typeFilter, polFilter, minPriceFilter, maxPriceFilter,popust, pageable);
+//    }
 
-    @GetMapping("/filter/{pol}/{type}/{minPrice}/{maxPrice}/{popust}")
-    public Page<Roba> filterProducts(
-            @PathVariable String pol,
-            @PathVariable String type,
-            @PathVariable Integer minPrice,
-            @PathVariable Integer maxPrice,
-            @PathVariable boolean popust,
-            Pageable pageable) {
-        // Use "all" or "null" as path variable value to skip filter
-        String typeFilter = "all".equalsIgnoreCase(type) ? null : type;
-        String polFilter = "all".equalsIgnoreCase(pol) ? null : pol;
-        Integer minPriceFilter = minPrice == 0 ? null : minPrice;
-        Integer maxPriceFilter = maxPrice == 0 ? null : maxPrice;
+    //ova e novoto za da rabotit i ko ke pratam string all namesto boolean
+@GetMapping("/filter/{pol}/{type}/{minPrice}/{maxPrice}/{popust}")
+public Page<Roba> filterProducts(
+        @PathVariable String pol,
+        @PathVariable String type,
+        @PathVariable Integer minPrice,
+        @PathVariable Integer maxPrice,
+        @PathVariable String popust, // <-- CHANGE THIS TO STRING
+        Pageable pageable) {
 
+    // Use "all" or "null" as path variable value to skip filter
+    String typeFilter = "all".equalsIgnoreCase(type) ? null : type;
+    String polFilter = "all".equalsIgnoreCase(pol) ? null : pol;
+    Integer minPriceFilter = minPrice == 0 ? null : minPrice;
+    Integer maxPriceFilter = maxPrice == 0 ? null : maxPrice;
 
-        return robaService.findWithFilters(typeFilter, polFilter, minPriceFilter, maxPriceFilter,popust, pageable);
-    }
+    // Convert the string "all" to null, otherwise parse the boolean "true"/"false"
+    Boolean popustFilter = "all".equalsIgnoreCase(popust) ? null : Boolean.parseBoolean(popust);
+
+    // Make sure robaService.findWithFilters accepts uppercase `Boolean` object
+    // instead of lowercase primitive `boolean` so it can receive `null`!
+    return robaService.findWithFilters(typeFilter, polFilter, minPriceFilter, maxPriceFilter, popustFilter, pageable);
+}
 
     @GetMapping("/findAllByPriceBetween")
     public Page<Roba> findAllByPriceBetween(

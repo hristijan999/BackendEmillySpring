@@ -38,7 +38,7 @@ public class RobaServiceImpl implements RobaService {
     }
 
     @Override
-    public Page<Roba> findWithFilters(String type, String pol, Integer minPrice, Integer maxPrice,boolean popust, Pageable pageable) {
+    public Page<Roba> findWithFilters(String type, String pol, Integer minPrice, Integer maxPrice,Boolean popust, Pageable pageable) {
         return robaRepository.findWithFilters(type, pol, minPrice, maxPrice,popust, pageable);
     }
 

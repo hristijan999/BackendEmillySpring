@@ -1,7 +1,9 @@
 package com.example.emilly_ecomercev2.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +12,8 @@ import java.util.List;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Korisnik implements UserDetails {
 
     @Id
@@ -25,15 +29,9 @@ public class Korisnik implements UserDetails {
     String verificationToken;
     @Column(nullable = false)
     boolean isEnabled;
-    public Korisnik() {
 
+    public Korisnik(String mail, String encodedPassword, String admin) {
     }
-    public Korisnik(String mail, String password, String role) {
-        this.mail = mail;
-        this.password = password;
-        this.role = role;
-    }
-
 
 
     @Override
