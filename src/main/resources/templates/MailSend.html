@@ -4,22 +4,40 @@
 <div style="max-width:600px; margin:0 auto; padding:20px; border:1px solid #eee; border-radius:8px;">
     <div style="text-align:center;">
         <img src="https://purple-gigantic-kangaroo-197.mypinata.cloud/ipfs/QmTwebymmmakVNnkmSsTVPNu6H5rLBosFLJZbiw2sUYmuS" alt="Emilly Shop" width="150"/>
-        <h2 style="color:#444;">Thank you for your order!</h2>
+        <h2 style="color:#444;">Ви благодариме за нарачката!</h2>
     </div>
-    <p>Dear <b th:text="${name} + ' ' + ${surname}">Customer Name</b>,</p>
-    <p>We have received your order and will deliver it to:</p>
-    <p><b th:text="${location}">Skopje</b></p>
+    <p> <b th:text="${name} + ' ' + ${surname}">Customer Name</b>,</p>
+    <p>Ја примивме вашата нарачка и ќе ја доставиме до:</p>
+    <p><b th:text="${location}">Скопје</b></p>
     <hr/>
     <ul>
-        <li th:each="item : ${items}" style="margin-bottom:10px;">
-            <img th:src="${items.}">g
-            <span th:text="${item.name}">Item Name</span> -
-            <span th:text="${item.quantity}">1</span> x
-            <span th:text="${item.price}">100.00</span> MKD
+        <li th:each="item : ${items}" style="margin-bottom: 15px; list-style: none; display: flex; align-items: center; border-bottom: 1px solid #f9f9f9; padding-bottom: 10px;">
+
+            <img th:if="${item.lista_Sliki != null and !item.lista_Sliki.isEmpty()}"
+                 th:src="${item.lista_Sliki[0]}"
+                 alt="Item Image"
+                 width="60"
+                 style="vertical-align:middle; margin-right:15px; border-radius:4px; object-fit: cover;"/>
+
+            <div>
+                <b th:text="${item.opis}" style="font-size: 16px; color: #222;">Опис</b>
+
+                <div style="font-size: 14px; color: #666; margin-top: 3px;">
+                    Големина: <span th:text="${item.sizePicked}" style="text-transform: uppercase; font-weight: bold;">M</span> |
+                    Количина: <span th:text="${item.quantity}" style="font-weight: bold;">1</span>
+                </div>
+
+                <div style="font-size: 14px; color: #333; margin-top: 3px;">
+                    Цена: <span th:text="${item.popust ? item.cenaSoPopust : item.price}">100</span> MKD
+                </div>
+            </div>
         </li>
     </ul>
+
+    <h4 th:text="|Вкупна цена: ${totalPrice} MKD|">Вкупна цена 0 MKD</h4>
+
     <p style="font-size:14px; color:#666;">
-        If you have any questions, contact us at support@emilly.com.mk
+        Ако имате прашање слободно контактирајте нè на бројот ...
     </p>
 </div>
 </body>

@@ -1,5 +1,6 @@
 package com.example.emilly_ecomercev2.Model;
 
+import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,10 +30,11 @@ public class Roba {
     String opis;
 
     String detalenOpis;
-
+    @Column(length = 4000)
     @ElementCollection
     List<String> lista_Sliki=new ArrayList<>();
 
+    @Column(length = 4000)
     @ElementCollection
     List<String> lista_Size=new ArrayList<>();
 
@@ -42,6 +44,8 @@ public class Roba {
     Boolean popust;
 
     int cenaSoPopust=0;
+    @Column(nullable = true)
+    Integer quantity;
 
 
 

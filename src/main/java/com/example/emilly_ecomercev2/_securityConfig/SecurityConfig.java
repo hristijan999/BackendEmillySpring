@@ -56,17 +56,17 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService)
                         )
                         .successHandler((request, response, authentication) -> {
-                            response.sendRedirect("http://localhost:5173/eshop");
+                            response.sendRedirect("http://localhost:5173/Eshop");
                         })
                         .failureHandler((request, response, exception) -> {
-                            response.sendRedirect("http://localhost:5173/login?error");
+                            response.sendRedirect("http://localhost:5173/Login?error");
                         })
                 )
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {
-                            response.setStatus(200);
+                            response.sendRedirect("http://localhost:5173/LogIn");
                         })
                 )
                 .sessionManagement(session -> session

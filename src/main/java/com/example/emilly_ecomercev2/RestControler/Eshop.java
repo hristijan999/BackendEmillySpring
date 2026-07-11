@@ -1,5 +1,6 @@
 package com.example.emilly_ecomercev2.RestControler;
 
+import com.example.emilly_ecomercev2.Model.DTO.RobaResponseDTO;
 import com.example.emilly_ecomercev2.Model.Roba;
 import com.example.emilly_ecomercev2.Service.RobaService;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/eshop")
+@RequestMapping("Api/eshop")
 public class  Eshop {
 
     public final RobaService robaService;
@@ -32,11 +33,11 @@ public class  Eshop {
         }
 
     @GetMapping("/findAllByType")
-    public Page<Roba> findAllByType(@RequestParam String type, Pageable pageable) {
+    public Page<RobaResponseDTO> findAllByType(@RequestParam String type, Pageable pageable) {
         return robaService.findAllByType(type, pageable);
     }
     @GetMapping("/pageablewithfilter")
-    public Page<Roba> findAllByTypeAndPriceBetween(
+    public Page<RobaResponseDTO> findAllByTypeAndPriceBetween(
             @RequestParam String type,
             @RequestParam int minPrice,
             @RequestParam int maxPrice,
@@ -44,34 +45,19 @@ public class  Eshop {
             Pageable pageable) {
         return robaService.findWithFilters(type, null, minPrice, maxPrice,popust, pageable);
     }
-// od forntend ako nee e aktiven filterot prakam string 'all' zato ne rabotitt ova
-//    @GetMapping("/filter/{pol}/{type}/{minPrice}/{maxPrice}/{popust}")
-//    public Page<Roba> filterProducts(
-//            @PathVariable String pol,
-//            @PathVariable String type,
-//            @PathVariable Integer minPrice,
-//            @PathVariable Integer maxPrice,
-//            @PathVariable boolean popust,
-//            Pageable pageable) {
-//        // Use "all" or "null" as path variable value to skip filter
-//        String typeFilter = "all".equalsIgnoreCase(type) ? null : type;
-//        String polFilter = "all".equalsIgnoreCase(pol) ? null : pol;
-//        Integer minPriceFilter = minPrice == 0 ? null : minPrice;
-//        Integer maxPriceFilter = maxPrice == 0 ? null : maxPrice;
-//
-//
-//        return robaService.findWithFilters(typeFilter, polFilter, minPriceFilter, maxPriceFilter,popust, pageable);
-//    }
+
+
+
 
     //ova e novoto za da rabotit i ko ke pratam string all namesto boolean
-@GetMapping("/filter/{pol}/{type}/{minPrice}/{maxPrice}/{popust}")
-public Page<Roba> filterProducts(
-        @PathVariable String pol,
-        @PathVariable String type,
-        @PathVariable Integer minPrice,
-        @PathVariable Integer maxPrice,
-        @PathVariable String popust, // <-- CHANGE THIS TO STRING
-        Pageable pageable) {
+    @GetMapping("/filter/{type}/{pol}/{minPrice}/{maxPrice}/{popust}")
+    public Page<RobaResponseDTO> filterProducts(
+            @PathVariable String type,  // 1. Прво 'type' бидејќи е прво во патеката
+            @PathVariable String pol,   // 2. Второ 'pol'
+            @PathVariable Integer minPrice,
+            @PathVariable Integer maxPrice,
+            @PathVariable String popust,
+            Pageable pageable){
 
     // Use "all" or "null" as path variable value to skip filter
     String typeFilter = "all".equalsIgnoreCase(type) ? null : type;

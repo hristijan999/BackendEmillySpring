@@ -1,14 +1,13 @@
 package com.example.emilly_ecomercev2.Service.Impl;
 
+import com.example.emilly_ecomercev2.Model.DTO.RobaResponseDTO;
 import com.example.emilly_ecomercev2.Model.Roba;
 import com.example.emilly_ecomercev2.Repository.RobaRepository;
 import com.example.emilly_ecomercev2.Service.RobaService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,20 +37,44 @@ public class RobaServiceImpl implements RobaService {
     }
 
     @Override
-    public Page<Roba> findWithFilters(String type, String pol, Integer minPrice, Integer maxPrice,Boolean popust, Pageable pageable) {
-        return robaRepository.findWithFilters(type, pol, minPrice, maxPrice,popust, pageable);
-    }
+    public Page<RobaResponseDTO> findWithFilters(String type, String pol, Integer minPrice, Integer maxPrice,Boolean popust, Pageable pageable) {
+        Page<Roba> robaPage = robaRepository.findWithFilters(type, pol, minPrice, maxPrice, popust, pageable);
+
+        // 2. Ја трансформираме страницата директно во Page<RobaResponseDto>
+        return robaPage.map(roba -> new RobaResponseDTO(
+                roba.getId(),
+                roba.getPol(),
+                roba.getType(),
+                roba.getPrice(),
+                roba.getOpis(),
+                roba.getDetalenOpis(),
+                roba.getLista_Sliki(), // Вчитана е веднаш поради @EntityGraph
+                roba.getSizePicked(),
+                roba.getPopust(),
+                roba.getCenaSoPopust()
+        ));
+
+         }
 
 
-    public Page<Roba> FindAllByType(String type,Pageable pageable) {
-        return robaRepository.findAllByType(type, pageable);
-    }
+
 
 
 
     @Override
-    public Page<Roba> findAllByType(String type, Pageable pageable) {
-        return robaRepository.findAllByType(type, pageable);
+    public Page<RobaResponseDTO> findAllByType(String type, Pageable pageable) {
+        return robaRepository.findAllByType(type, pageable).map(roba -> new RobaResponseDTO(
+                roba.getId(),
+                roba.getPol(),
+                roba.getType(),
+                roba.getPrice(),
+                roba.getOpis(),
+                roba.getDetalenOpis(),
+                roba.getLista_Sliki(),
+                roba.getSizePicked(),
+                roba.getPopust(),
+                roba.getCenaSoPopust()
+        ));
     }
 
     @Override

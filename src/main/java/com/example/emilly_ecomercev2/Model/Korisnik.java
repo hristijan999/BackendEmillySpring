@@ -31,6 +31,9 @@ public class Korisnik implements UserDetails {
     boolean isEnabled;
 
     public Korisnik(String mail, String encodedPassword, String admin) {
+        this.mail = mail;
+        this.password = encodedPassword;
+        this.role = admin;
     }
 
 

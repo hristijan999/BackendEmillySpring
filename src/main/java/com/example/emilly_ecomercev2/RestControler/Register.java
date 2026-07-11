@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/Register")
+@RequestMapping("Api/Register")
 @CrossOrigin
 public class Register {
 

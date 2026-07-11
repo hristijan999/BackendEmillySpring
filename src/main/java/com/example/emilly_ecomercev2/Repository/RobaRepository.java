@@ -4,17 +4,17 @@ package com.example.emilly_ecomercev2.Repository;
 import com.example.emilly_ecomercev2.Model.Roba;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface RobaRepository extends JpaRepository<Roba, Long> {
 
-    /**
-     * Finds products with optional filters for type, gender (pol), and price range.
-     * Any filter can be null, in which case it will be ignored.
-     * Supports pagination and sorting via the Pageable parameter.
-     */
+
+    @EntityGraph(attributePaths = {"lista_Sliki"})
     @Query("SELECT r FROM Roba r WHERE " +
             "(:type IS NULL OR r.type = :type) AND " +
             "(:pol IS NULL OR r.pol = :pol) AND " +
@@ -29,8 +29,9 @@ public interface RobaRepository extends JpaRepository<Roba, Long> {
             @Param("popust") Boolean popust,
             Pageable pageable);
 
-    Roba findFirstById(Long id);
 
+    Roba findFirstById(Long id);
+    @EntityGraph(attributePaths = {"lista_Sliki"})
     Page<Roba> findAllByType(String type, Pageable pageable);
 
     Page<Roba> findAllByPriceBetween(int minPrice, int maxPrice, Pageable pageable);
