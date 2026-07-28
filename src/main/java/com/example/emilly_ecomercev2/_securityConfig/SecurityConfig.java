@@ -1,12 +1,13 @@
 package com.example.emilly_ecomercev2._securityConfig;
-
 import com.example.emilly_ecomercev2.Service.Impl.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,8 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -26,14 +27,28 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
 
+    // Го чита FRONTEND_URL дефиниран во application.properties / Docker
+    @Value("${app.cors.allowed-origins}")
+    private String allowedOrigins;
+
     public SecurityConfig(CustomOAuth2UserService customOAuth2UserService) {
         this.customOAuth2UserService = customOAuth2UserService;
     }
 
+    // Помошен метод кој го зема првиот URL од листата за пренасочување (Firebase или localhost)
+    private String getPrimaryFrontendUrl() {
+        if (allowedOrigins != null && !allowedOrigins.isBlank()) {
+            return allowedOrigins.split(",")[0].trim();
+        }
+        return "http://localhost:5173";
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        String baseUrl = getPrimaryFrontendUrl();
+
         http
-                .cors(Customizer.withDefaults()) // ✅ Enable CORS support
+                .cors(Customizer.withDefaults()) // ✅ Го користи corsConfigurationSource() Bean-от подолу
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
@@ -43,7 +58,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginProcessingUrl("/auth/login")
                         .successHandler((request, response, authentication) -> {
-                            request.getSession(true); // ✅ create the session and cookie
+                            request.getSession(true);
                             response.setStatus(HttpServletResponse.SC_OK);
                         })
                         .failureHandler((request, response, exception) -> {
@@ -56,28 +71,27 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService)
                         )
                         .successHandler((request, response, authentication) -> {
-                            response.sendRedirect("http://localhost:5173/Eshop");
+                            // ✅ Пренасочува кон активниот фронтенд (Firebase во продукција)
+                            response.sendRedirect(baseUrl + "/Eshop");
                         })
                         .failureHandler((request, response, exception) -> {
-                            response.sendRedirect("http://localhost:5173/Login?error");
+                            response.sendRedirect(baseUrl + "/Login?error");
                         })
                 )
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {
-                            response.sendRedirect("http://localhost:5173/LogIn");
+                            response.sendRedirect(baseUrl + "/LogIn");
                         })
                 )
                 .sessionManagement(session -> session
                         .maximumSessions(1)
                 );
 
-
-
-
         return http.build();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
@@ -86,10 +100,16 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+
+        // ✅ Ги дели сите домени одвоени со запирка од FRONTEND_URL
+        List<String> origins = Arrays.stream(allowedOrigins.split(","))
+                .map(String::trim)
+                .toList();
+
+        config.setAllowedOrigins(origins);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true); // ✅ Only if you send cookies / auth headers
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
@@ -100,5 +120,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
