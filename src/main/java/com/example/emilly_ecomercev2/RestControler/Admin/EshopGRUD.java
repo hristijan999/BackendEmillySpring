@@ -5,7 +5,7 @@ import com.example.emilly_ecomercev2.Service.RobaService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("Admin/eshopGRUD")
+@RequestMapping("Api/Admin/eshopGRUD")
 public class EshopGRUD {
 
     public final RobaService robaService;

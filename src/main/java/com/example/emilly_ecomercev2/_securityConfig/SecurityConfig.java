@@ -37,9 +37,9 @@ public class SecurityConfig {
 
     // Помошен метод кој го зема првиот URL од листата за пренасочување (Firebase или localhost)
     private String getPrimaryFrontendUrl() {
-        if (allowedOrigins != null && !allowedOrigins.isBlank()) {
-            return allowedOrigins.split(",")[0].trim();
-        }
+//        if (allowedOrigins != null && !allowedOrigins.isBlank()) {
+//            return allowedOrigins.split(",")[0].trim();
+//        }
         return "http://localhost:5173";
     }
     @Bean
@@ -75,7 +75,7 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService)
                         )
                         .successHandler((request, response, authentication) -> {
-                            response.sendRedirect(baseUrl + "/Eshop"); // 👈 Сега овде е 100% валидно!
+                            response.sendRedirect(baseUrl + "/Eshop");
                         })
                         .failureHandler((request, response, exception) -> {
                             response.sendRedirect(baseUrl + "/Login?error");
