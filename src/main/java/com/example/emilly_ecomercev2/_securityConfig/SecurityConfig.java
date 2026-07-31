@@ -27,7 +27,6 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
 
-    // Го чита FRONTEND_URL дефиниран во application.properties / Docker
     @Value("${app.cors.allowed-origins}")
     private String allowedOrigins;
 
@@ -35,16 +34,16 @@ public class SecurityConfig {
         this.customOAuth2UserService = customOAuth2UserService;
     }
 
-    // Помошен метод кој го зема првиот URL од листата за пренасочување (Firebase или localhost)
+
     private String getPrimaryFrontendUrl() {
-//        if (allowedOrigins != null && !allowedOrigins.isBlank()) {
-//            return allowedOrigins.split(",")[0].trim();
-//        }
+        if (allowedOrigins != null && !allowedOrigins.isBlank()) {
+            return allowedOrigins.split(",")[0].trim();
+        }
         return "http://localhost:5173";
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // ✅ Вредноста се доделува само еднаш — променливата е ефективно final
+
         String rawUrl = getPrimaryFrontendUrl();
         final String baseUrl = rawUrl.endsWith("/")
                 ? rawUrl.substring(0, rawUrl.length() - 1)
@@ -108,10 +107,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // 1. Ги чистиме празните места И ги отстрануваме косите црти (/) од крајот на секое URL
+
         List<String> origins = Arrays.stream(allowedOrigins.split(","))
                 .map(String::trim)
-                .map(url -> url.replaceAll("/+$", "")) // Ја отстранува косата црта на крајот ако постои
+                .map(url -> url.replaceAll("/+$", ""))
                 .filter(url -> !url.isBlank())
                 .toList();
 
