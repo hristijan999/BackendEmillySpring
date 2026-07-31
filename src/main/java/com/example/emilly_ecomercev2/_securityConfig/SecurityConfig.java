@@ -42,19 +42,23 @@ public class SecurityConfig {
         }
         return "http://localhost:5173";
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        String baseUrl = getPrimaryFrontendUrl();
+        // ✅ Вредноста се доделува само еднаш — променливата е ефективно final
+        String rawUrl = getPrimaryFrontendUrl();
+        final String baseUrl = rawUrl.endsWith("/")
+                ? rawUrl.substring(0, rawUrl.length() - 1)
+                : rawUrl;
 
         http
-                .cors(Customizer.withDefaults()) // ✅ Го користи corsConfigurationSource() Bean-от подолу
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/Admin/**").hasAuthority("ADMIN")
                         .anyRequest().permitAll()
                 )
+
                 .formLogin(form -> form
                         .loginProcessingUrl("/auth/login")
                         .successHandler((request, response, authentication) -> {
@@ -71,8 +75,7 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService)
                         )
                         .successHandler((request, response, authentication) -> {
-                            // ✅ Пренасочува кон активниот фронтенд (Firebase во продукција)
-                            response.sendRedirect(baseUrl + "/Eshop");
+                            response.sendRedirect(baseUrl + "/Eshop"); // 👈 Сега овде е 100% валидно!
                         })
                         .failureHandler((request, response, exception) -> {
                             response.sendRedirect(baseUrl + "/Login?error");
@@ -81,10 +84,14 @@ public class SecurityConfig {
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
                         .logoutSuccessHandler((request, response, authentication) -> {
-                            response.sendRedirect(baseUrl + "/LogIn");
+                            response.setStatus(HttpServletResponse.SC_OK);
                         })
                 )
+
                 .sessionManagement(session -> session
                         .maximumSessions(1)
                 );
@@ -101,12 +108,15 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // ✅ Ги дели сите домени одвоени со запирка од FRONTEND_URL
+        // 1. Ги чистиме празните места И ги отстрануваме косите црти (/) од крајот на секое URL
         List<String> origins = Arrays.stream(allowedOrigins.split(","))
                 .map(String::trim)
+                .map(url -> url.replaceAll("/+$", "")) // Ја отстранува косата црта на крајот ако постои
+                .filter(url -> !url.isBlank())
                 .toList();
 
-        config.setAllowedOrigins(origins);
+        // 2. Користиме setAllowedOriginPatterns наместо setAllowedOrigins
+        config.setAllowedOriginPatterns(origins);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
