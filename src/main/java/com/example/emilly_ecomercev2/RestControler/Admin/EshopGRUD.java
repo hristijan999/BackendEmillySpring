@@ -28,12 +28,12 @@ public class EshopGRUD {
         robaService.deleteById(id);
     }
 
-    @GetMapping("/update")
-    public void update(@RequestBody Roba roba)
+    @PutMapping("/update/{id}")
+    public void update(@RequestBody Roba roba,@PathVariable Long id)
     {
         System.out.println("vleze vo grub update");
         System.out.println(roba);
-        robaService.update(roba);
+        robaService.update(roba,id);
     }
 
 }

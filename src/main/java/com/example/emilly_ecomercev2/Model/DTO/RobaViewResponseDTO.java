@@ -6,12 +6,14 @@ import java.util.Set;
 public record RobaViewResponseDTO(
     Long id,
     String type,
+    String pol,
     int price,
     String opis,
     String detalenOpis,
     List<String> lista_Sliki,
     Set<String> lista_Size,
     Boolean popust,
-    int cenaSoPopust
+    int cenaSoPopust,
+    List<String> material
 )
 {}

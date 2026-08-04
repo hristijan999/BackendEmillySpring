@@ -27,6 +27,6 @@ public interface RobaService {
 
     public void deleteById(Long id);
     public void save(Roba roba);
-    public void update(Roba roba);
+    public void update(Roba roba, Long id);
     List<Roba> findAllById(Iterable<Long> ids);
 }

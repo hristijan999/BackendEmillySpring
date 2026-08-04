@@ -38,13 +38,15 @@ public class RobaServiceImpl implements RobaService {
         return new RobaViewResponseDTO(
                 roba.getId(),
                 roba.getType(),
+                roba.getPol(),
                 roba.getPrice(),
                 roba.getOpis(),
                 roba.getDetalenOpis(),
                 roba.getLista_Sliki(),
                 uniqueSizes,
                 roba.getPopust(),
-                roba.getCenaSoPopust()
+                roba.getCenaSoPopust(),
+                roba.getMaterial()
         );
     }
 
@@ -55,13 +57,15 @@ public class RobaServiceImpl implements RobaService {
         return new RobaViewResponseDTO(
                 roba.getId(),
                 roba.getType(),
+                roba.getPol(),
                 roba.getPrice(),
                 roba.getOpis(),
                 roba.getDetalenOpis(),
                 roba.getLista_Sliki(),
                 uniqueSizes,
                 roba.getPopust(),
-                roba.getCenaSoPopust()
+                roba.getCenaSoPopust(),
+                roba.getMaterial()
         );
     }
 
@@ -132,9 +136,9 @@ public class RobaServiceImpl implements RobaService {
         robaRepository.deleteById(id);
     }
 
-    public void update(Roba roba)
+    public void update(Roba roba,Long id)
     {
-        Roba existingRoba = robaRepository.findById(roba.getId()).orElse(null);
+        Roba existingRoba = robaRepository.findById(id).orElse(null);
         if(existingRoba != null) {
             existingRoba.setPol(roba.getPol());
             existingRoba.setType(roba.getType());
