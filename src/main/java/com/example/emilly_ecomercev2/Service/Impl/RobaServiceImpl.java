@@ -1,6 +1,7 @@
 package com.example.emilly_ecomercev2.Service.Impl;
 
 import com.example.emilly_ecomercev2.Model.DTO.RobaResponseDTO;
+import com.example.emilly_ecomercev2.Model.DTO.RobaViewResponseDTO;
 import com.example.emilly_ecomercev2.Model.Roba;
 import com.example.emilly_ecomercev2.Repository.RobaRepository;
 import com.example.emilly_ecomercev2.Service.RobaService;
@@ -8,7 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class RobaServiceImpl implements RobaService {
@@ -27,13 +31,38 @@ public class RobaServiceImpl implements RobaService {
     }
 
     @Override
-    public Optional<Roba> findById(Long id) {
-        return robaRepository.findById(id);
+    public RobaViewResponseDTO findById(Long id) {
+
+        Roba roba =robaRepository.findFirstById(id);
+        Set<String> uniqueSizes = new HashSet<>(roba.getLista_Size());
+        return new RobaViewResponseDTO(
+                roba.getId(),
+                roba.getType(),
+                roba.getPrice(),
+                roba.getOpis(),
+                roba.getDetalenOpis(),
+                roba.getLista_Sliki(),
+                uniqueSizes,
+                roba.getPopust(),
+                roba.getCenaSoPopust()
+        );
     }
 
     @Override
-    public Roba findFirstById(Long id) {
-        return robaRepository.findFirstById(id);
+    public RobaViewResponseDTO findFirstById(Long id) {
+        Roba roba =robaRepository.findFirstById(id);
+        Set<String> uniqueSizes = new HashSet<>(roba.getLista_Size());
+        return new RobaViewResponseDTO(
+                roba.getId(),
+                roba.getType(),
+                roba.getPrice(),
+                roba.getOpis(),
+                roba.getDetalenOpis(),
+                roba.getLista_Sliki(),
+                uniqueSizes,
+                roba.getPopust(),
+                roba.getCenaSoPopust()
+        );
     }
 
     @Override
@@ -119,6 +148,11 @@ public class RobaServiceImpl implements RobaService {
             existingRoba.setCenaSoPopust(roba.getCenaSoPopust());
             robaRepository.save(existingRoba);
         }
+    }
+
+    @Override
+    public List<Roba> findAllById(Iterable<Long> ids) {
+        return robaRepository.findAllById(ids);
     }
 
 

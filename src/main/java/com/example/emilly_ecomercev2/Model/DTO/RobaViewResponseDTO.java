@@ -3,15 +3,15 @@ package com.example.emilly_ecomercev2.Model.DTO;
 import java.util.List;
 import java.util.Set;
 
-public record RobaResponseDTO(
+public record RobaViewResponseDTO(
     Long id,
-    String pol,
     String type,
     int price,
     String opis,
     String detalenOpis,
     List<String> lista_Sliki,
-    String sizePicked,
+    Set<String> lista_Size,
     Boolean popust,
     int cenaSoPopust
-){}
+)
+{}

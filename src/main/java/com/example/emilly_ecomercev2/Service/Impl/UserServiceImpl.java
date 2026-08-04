@@ -3,20 +3,24 @@ package com.example.emilly_ecomercev2.Service.Impl;
 import com.example.emilly_ecomercev2.Model.Korisnik;
 import com.example.emilly_ecomercev2.Repository.UserRepository;
 import com.example.emilly_ecomercev2.Service.UserService;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
-
+    private final PasswordEncoder passwordEncoder;
     public final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
@@ -63,20 +67,32 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
     public void save(Korisnik user)
     {
-        userRepository.save(user);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-        Korisnik user = userRepository.findByMail(mail);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        if(Objects.equals(user.getMail(), "hristijan.kolevski099@gmail.com"))
+        {
+            Korisnik newuser=new Korisnik(user.getMail(),encodedPassword,"ADMIN");
+            userRepository.save(newuser);
         }
+        else
+        {
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getMail())
-                .password(user.getPassword()) // Should already be encoded!
-                .roles(user.getRole()) // e.g. "ADMIN" or "USER"
-                .build();
+            Korisnik newuser=new Korisnik(user.getMail(),encodedPassword,"USER");
+            userRepository.save(newuser);
+        }
     }
+
+
+@Override
+public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+    Korisnik user = userRepository.findByMail(mail);
+    if (user == null) {
+        throw new UsernameNotFoundException("User not found");
+    }
+
+    return org.springframework.security.core.userdetails.User
+            .withUsername(user.getMail())
+            .password(user.getPassword())
+            .authorities(new SimpleGrantedAuthority(user.getRole())) // 👈 Не додава "ROLE_", ја користи точно улогата од базата
+            .build();
+}
 }

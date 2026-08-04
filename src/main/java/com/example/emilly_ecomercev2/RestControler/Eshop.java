@@ -1,6 +1,7 @@
 package com.example.emilly_ecomercev2.RestControler;
 
 import com.example.emilly_ecomercev2.Model.DTO.RobaResponseDTO;
+import com.example.emilly_ecomercev2.Model.DTO.RobaViewResponseDTO;
 import com.example.emilly_ecomercev2.Model.Roba;
 import com.example.emilly_ecomercev2.Service.RobaService;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,7 @@ public class  Eshop {
     }
 
         @GetMapping("findById/{id}")
-        public Roba findById(@PathVariable Long id) {
+        public RobaViewResponseDTO findById(@PathVariable Long id) {
             return robaService.findFirstById(id);
         }
 

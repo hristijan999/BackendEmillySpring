@@ -17,30 +17,18 @@ import java.util.Objects;
 public class Register {
 
     public final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+
 
 
     public Register(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+
     }
 
     @PostMapping()
     public void register(@RequestBody Korisnik user)
     {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        if(Objects.equals(user.getMail(), "hristijan.kolevski099@gmail.com"))
-        {
-            Korisnik newuser=new Korisnik(user.getMail(),encodedPassword,"ADMIN");
-            userService.save(newuser);
-        }
-        else
-        {
-
-            Korisnik newuser=new Korisnik(user.getMail(),encodedPassword,"USER");
-            userService.save(newuser);
-        }
-
+            userService.save(user);
     }
     @GetMapping("/me")
     public Map<String, Object> currentUser(Principal principal, Authentication authentication) {

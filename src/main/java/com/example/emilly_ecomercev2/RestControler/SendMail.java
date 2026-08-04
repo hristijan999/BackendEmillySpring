@@ -5,6 +5,7 @@ import com.example.emilly_ecomercev2.Model.Appointment;
 import com.example.emilly_ecomercev2.Model.MailRequest;
 import com.example.emilly_ecomercev2.Model.Roba;
 import com.example.emilly_ecomercev2.Service.Impl.MailServiceImpl;
+import com.example.emilly_ecomercev2.Service.RobaService;
 import jakarta.mail.MessagingException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,10 @@ import java.util.Map;
 public  class SendMail {
 
     public final MailServiceImpl mailServiceImpl;
-
-    public SendMail(MailServiceImpl mailServiceImpl) {
+    public final RobaService  robaService;
+    public SendMail(MailServiceImpl mailServiceImpl, RobaService robaService) {
         this.mailServiceImpl = mailServiceImpl;
+        this.robaService = robaService;
     }
 
     @PostMapping("/Order")
@@ -34,8 +36,7 @@ public  class SendMail {
                 "cart", request.getCart()
         );
         System.out.println(model.get("cart"));
-//        List<Roba> cart = (List<Roba>) model.get("cart");
-//        cart.forEach(r -> System.out.println(r.getId() + " " + r.getSizePicked()));
+        
 
         mailServiceImpl.sendOrderMail(request.getEmail(), model);
     }

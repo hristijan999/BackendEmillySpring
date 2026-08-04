@@ -1,6 +1,7 @@
 
 package com.example.emilly_ecomercev2.Repository;
 
+import com.example.emilly_ecomercev2.Model.DTO.RobaViewResponseDTO;
 import com.example.emilly_ecomercev2.Model.Roba;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,7 @@ public interface RobaRepository extends JpaRepository<Roba, Long> {
             @Param("popust") Boolean popust,
             Pageable pageable);
 
-
+    List<Roba> findAllById(Iterable<Long> ids);
     Roba findFirstById(Long id);
     @EntityGraph(attributePaths = {"lista_Sliki"})
     Page<Roba> findAllByType(String type, Pageable pageable);
