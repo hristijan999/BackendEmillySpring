@@ -1,38 +1,14 @@
-# Stage 1: Build the application using Maven
-FROM maven:3.9.6-eclipse-temurin-17-focal AS build
-
-# Set the working directory
+FROM eclipse-temurin:17-jdk-alpine AS builder
 WORKDIR /app
-
-# Copy the Maven wrapper and pom.xml to leverage Docker cache
-COPY mvnw .
-COPY .mvn .mvn
 COPY pom.xml .
-
-# Download dependencies
-RUN mvn dependency:go-offline
-
-# Copy the rest of the application source code
+COPY mvnw .
+COPY mvnw.cmd .
+COPY .mvn .mvn
 COPY src ./src
+RUN ./mvnw clean package -DskipTests
 
-# Package the application, skipping tests
-RUN mvn clean package -DskipTests
-
-# Stage 2: Create the final, smaller runtime image
-FROM eclipse-temurin:17-jre-jammy
-
-# Set the working directory
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-
-# Argument to specify the path to the JAR file
-ARG JAR_FILE=/app/target/*.jar
-
-# Copy the JAR file from the build stage
-COPY --from=build ${JAR_FILE} application.jar
-
-# Expose the port the application runs on (default for Spring Boot is 8080)
+COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Command to run the application
-ENTRYPOINT ["java", "-jar", "application.jar"]
-
+ENTRYPOINT ["java", "-jar", "app.jar"]
